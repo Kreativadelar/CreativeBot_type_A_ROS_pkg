@@ -26,7 +26,7 @@ Connect ultrasonic sensor to port 9
 Required:
 --
 - [https://github.com/Kreativadelar/CreativeBot_type_A_firmware](CreativeBot type A firmware for the Me Auriga control board)
-- rosserial_python
+- [http://wiki.ros.org/rosserial?distro=kinetic](rosserial for communication with Me Auriga control board)
 - For teleop. with xbox 360 controller you need [Joy](http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick) 
 
 Installation:
