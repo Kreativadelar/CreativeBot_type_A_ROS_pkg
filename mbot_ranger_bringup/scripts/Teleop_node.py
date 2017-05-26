@@ -4,13 +4,21 @@ import rospy
 from sensor_msgs.msg import Joy
 from std_msgs.msg import ColorRGBA
 from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Vector3
 
 r = 0
 g = 0
 b = 0
 a = 0
 
+last_lin_x_vel = 0
+last_ang_z_vel = 0
+last_buzzer = 0
+last_color = ColorRGBA()
+
 msg = Twist()
+buzzer_msg = Vector3()
+color_msg = ColorRGBA()
 
 # Receives joystick messages (subscribed to Joy topic)
 # then converts the joysick inputs into Twist commands
@@ -37,29 +45,40 @@ def handleButtons (buttons):
     global g
     global b
     global a
+    global color_msg
+    global buzzer_msg
 
     if buttons[2] == 1:
-	r = 0
-	g = 0
-        b = 255
+	color_msg.r = 0
+	color_msg.g = 0
+        color_msg.b = 255
     elif buttons[3] == 1:
-        r = 255
-	g = 255
-        b = 0
+        color_msg.r = 255
+        color_msg.g = 255
+        color_msg.b = 0
     elif buttons[1] == 1:
-        r = 255
-	g = 0
-        b = 0
+        color_msg.r = 255
+	color_msg.g = 0
+        color_msg.b = 0	
     elif buttons[0] == 1:
-        r = 0
-	g = 255
-        b = 0
+        color_msg.r = 0
+	color_msg.g = 255
+        color_msg.b = 0
     else:
-	r = 0
-	g = 0        
-	b = 0
+	color_msg.r = 0
+	color_msg.g = 0        
+	color_msg.b = 0
 
-    pubRGB.publish(r,g,b,a)
+    color_msg.a = 0
+    #pubRGB.publish(r,g,b,a)
+
+    if buttons[5] == 1:
+        buzzer_msg.x = 982
+        buzzer_msg.y = 200
+        #pubBuzzer.publish(982,10,0)
+    elif buttons[5] == 0:
+        buzzer_msg.x = 0
+        buzzer_msg.y = 0
 
 
 
@@ -67,10 +86,17 @@ def handleButtons (buttons):
 # ----------------------
 pubRGB = rospy.Publisher('rgb', ColorRGBA, queue_size=1)
 pubTwist = rospy.Publisher('cmd_vel', Twist, queue_size=100)
+pubBuzzer = rospy.Publisher('buzzer', Vector3, queue_size=1)
 
 
 def main():
     global msg
+    global last_lin_x_vel
+    global last_ang_z_vel
+    global buzzer_msg
+    global last_buzzer
+    global color_msg
+    global last_color
 
     # Subscribe for teleoperations
     rospy.Subscriber("joy", Joy, joyCallback)
@@ -80,7 +106,21 @@ def main():
     rate = rospy.Rate(10)  # 10hz
 
     while not rospy.is_shutdown():
-	pubTwist.publish(msg)
+        if msg.linear.x != last_lin_x_vel or msg.angular.z != last_ang_z_vel:
+	    pubTwist.publish(msg)
+            last_lin_x_vel = msg.linear.x
+            last_ang_z_vel = msg.angular.z
+        
+        if buzzer_msg.x != last_buzzer:
+            pubBuzzer.publish(buzzer_msg)
+            last_buzzer = buzzer_msg.x
+
+        if color_msg != last_color:
+            pubRGB.publish(color_msg)
+            last_color.r = color_msg.r
+            last_color.g = color_msg.g
+            last_color.b = color_msg.b
+            last_color.a = color_msg.a
 
         rate.sleep()
         #print("been here!")
