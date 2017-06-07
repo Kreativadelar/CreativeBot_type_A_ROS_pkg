@@ -16,7 +16,7 @@ Features:
 -- Control
 - Move robot - Topic cmd_vel (Twist)
 - Send velocity to left motor (RPM) - Topic lwheel_vtarget (Float32)
-- Send velocity to right tmotor (RPM) - Topic rwheel_vtarget (Float32)
+- Send velocity to right motor (RPM) - Topic rwheel_vtarget (Float32)
 - Control led ring - Topic rbg (ColorRGBA)
 
 Hardware:
