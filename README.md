@@ -7,12 +7,16 @@ Features:
 - Get battery state - Topic battery_state
 - Get ligth sensor 1 - Topic ligth 1
 - Get ligth sensor 2 - Topic ligth 2
+- Get left motor velocity (RPM) - Topic left_rpm
+- Get right motor velocity (RPM) - Topic right_rpm
 - Get sound sensor - Topic sound
 - Get temperature - Topic temp
 - Get ultrasonic sensor data - Topic ultrasound
 
 -- Control
 - Move robot - Topic cmd_vel (Twist)
+- Send velocity to left motor (RPM) - Topic lwheel_vtarget (Float32)
+- Send velocity to right tmotor (RPM) - Topic rwheel_vtarget (Float32)
 - Control led ring - Topic rbg (ColorRGBA)
 
 Hardware:
