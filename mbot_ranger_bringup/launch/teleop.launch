@@ -7,6 +7,8 @@
     <param name="baud" value="115200"/>
   </node>
 
-  <node pkg="mbot_ranger_bringup" type="Teleop_node.py" name="teleop" output="screen"/>
+  <node pkg="mbot_ranger_bringup" type="teleop_node.py" name="teleop" output="screen"/>
+
+  <node pkg="mbot_ranger_bringup" type="twist_to_motors.py" name="twistToMotor" output="screen"/>
 
 </launch>
